@@ -151,6 +151,61 @@ export default function Mobile() {
                   <div>cek</div>
                 </div>
               </div>
+              <div class=" flex  border border-red-400 overflow-x-scroll ">
+                <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+              </div>
+              <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
+                <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+             
+              </div>
+              <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+                <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
+                  <div>cek</div>
+                </div>
+              </div>
               
             </div>
         )}
