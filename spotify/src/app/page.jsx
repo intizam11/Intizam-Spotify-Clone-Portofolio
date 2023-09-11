@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState} from "react";
-import Mobile from "../app/components/mobile";
+import Progres from '@/app/components/progres';
+import { useEffect, useState } from "react";
 import FirstLoad from "../app/components/firstLoad";
 import Web from "../app/components/web";
-import Progres from '@/app/components/progres'
+import Mobile from '@/app/components/mobile'
 
 export default function Home() {
   const [loadBaru, setLoadBaru] = useState(true);
@@ -37,7 +37,8 @@ export default function Home() {
       ) : (
         <div className="container mx-auto overflow-hidden ">
           {windowWidth < mobileWidth ? (
-            <Progres />
+            // <Progres />
+            <Mobile />
           ) : (
             <Web />
           )}

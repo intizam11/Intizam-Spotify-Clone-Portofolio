@@ -18,6 +18,7 @@ export default function Web() {
   const client_id = process.env.NEXT_PUBLIC_CLIENT;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [music, setMusic] = useState();
+  console.log(music);
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   // search
   const [ViewPage, setViewPage] = useState("viewLandingPage");
@@ -781,7 +782,8 @@ export default function Web() {
         {/* play button */}
         <div className=" absolute inset-x-0 bottom-0 h-20  bg-black z-20">
           {/* {loadingValuePlayer ? ( */}
-          {state.isLoading ? <div></div> : <AudioPlayer />}
+          {state.isLoading  ? <div></div> : <AudioPlayer />}
+          
         </div>
         {/* play button */}
       </div>
