@@ -95,7 +95,7 @@ export default function Mobile() {
         </div>
 
         {viewPageMobile == "landingpageMobile" && (
-            <div className="border h-4/5">
+            <div className="border h-4/5 overflow-auto">
               <div class=" flex  border border-red-400 overflow-x-scroll ">
                 <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
                   <div>cek</div>
@@ -151,6 +151,7 @@ export default function Mobile() {
                   <div>cek</div>
                 </div>
               </div>
+              
             </div>
         )}
 
