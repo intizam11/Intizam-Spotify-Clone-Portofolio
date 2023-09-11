@@ -14,7 +14,8 @@ export default function Mobile() {
   const client_id = process.env.NEXT_PUBLIC_CLIENT;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [music, setMusic] = useState();
-  console.log(music);
+  const [lagiViral, setLagiViral] = useState();
+  // console.log(music);
   const [skeltonMusic, setSkeltonMusic] = useState(false);
 
   const greetings = () => {
@@ -50,6 +51,25 @@ export default function Mobile() {
     }
   };
 
+  const getLagiViral = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/playlists/37i9dQZF1DWWhB4HOWKFQc`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.tracks.items) {
+        setLagiViral(data.tracks.items);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getToken = async () => {
     try {
       const response = await fetch("https://accounts.spotify.com/api/token", {
@@ -74,6 +94,7 @@ export default function Mobile() {
     localStorage.removeItem("history");
     setTimeout(() => {
       getplaylist();
+      getLagiViral();
     }, 500);
   }, []);
 
@@ -138,7 +159,7 @@ export default function Mobile() {
           ) : (
             <div className="border flex p-4 ">
               <div className="border w-full flex justify-center align-item items-center">
-                <h1 className="text-3xl font-bold  text-white font-bold md:visible">
+                <h1 className="text-3xl font-bold  text-white font-bold">
                   {greetings()}
                 </h1>
               </div>
@@ -151,6 +172,9 @@ export default function Mobile() {
 
         {viewPageMobile == "landingpageMobile" && (
           <div className="border h-4/5 overflow-auto">
+            <div className="h-6 ms-2">
+              <h1 className=" font-bold  text-white font-bold">Discover</h1>
+            </div>
             <div class=" flex  border border-red-400 overflow-x-scroll ">
               {music?.map((item1) => (
                 <div className="border bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
@@ -179,21 +203,38 @@ export default function Mobile() {
                 </div>
               ))}
             </div>
-
-            <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
+            <div className="h-6 ms-2">
+              <h1 className=" font-bold  text-white font-bold">Trending</h1>
             </div>
+            <div class=" flex  border border-red-400 overflow-x-scroll">
+              {lagiViral?.map((item2) => (
+                <div className="flex justify-center align-item items-center border h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
+                  <img
+                    className="mx-auto border  rounded-md h-16 w-16  w-full h-full "
+                    src={item2.track.album.images[1].url}
+                    alt="tidak ada gambar"
+                  />
+                  <div
+                    className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
+                    onClick={() => {
+                      dispatch({
+                        type: "SETAUDIO_PLAYER",
+                        isLoading: true,
+                        payload: {
+                          audioName: item2.track.name,
+                          artisName: item2.track.artists[0].name,
+                          audioImage: item2.track.album.images[0].url,
+                          audioUrl: item2.track.preview_url,
+                        },
+                      });
+                    }}
+                  >
+                    <img className="w-6 h-6" src="/playbutton.jpg" alt="not" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
               <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
                 <div>cek</div>
@@ -231,43 +272,6 @@ export default function Mobile() {
                 <div>cek</div>
               </div>
               <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-            </div>
-            <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-56 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-            </div>
-            <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
                 <div>cek</div>
               </div>
             </div>
