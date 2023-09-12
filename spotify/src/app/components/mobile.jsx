@@ -15,8 +15,11 @@ export default function Mobile() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [music, setMusic] = useState();
   const [lagiViral, setLagiViral] = useState();
+  const [hotHits, setHotHits] = useState();
+  console.log(hotHits);
   // console.log(music);
   const [skeltonMusic, setSkeltonMusic] = useState(false);
+  const [bottomBar, setBottomBar] = useState(false);
 
   const greetings = () => {
     if (greet < 11) {
@@ -70,6 +73,25 @@ export default function Mobile() {
     }
   };
 
+  const getHotHits = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/playlists/37i9dQZF1DXa2EiKmMLhFD`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.tracks.items) {
+        setHotHits(data.tracks.items);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getToken = async () => {
     try {
       const response = await fetch("https://accounts.spotify.com/api/token", {
@@ -95,6 +117,7 @@ export default function Mobile() {
     setTimeout(() => {
       getplaylist();
       getLagiViral();
+      getHotHits();
     }, 500);
   }, []);
 
@@ -139,7 +162,14 @@ export default function Mobile() {
             </div>
             {/* header kiri */}
             {/* header kanan */}
-            <div className="w-1/2 border "></div>
+            <div className="w-1/2 border flex  justify-end">
+              <div
+                onClick={() => setBottomBar(!bottomBar)}
+                className=" w-14 h-full flex justify-center align-item items-center"
+              >
+                <Image width={38} height={38} src="/humberger.png" alt="none" />
+              </div>
+            </div>
             {/* header kanan */}
           </div>
           {/* header */}
@@ -172,8 +202,9 @@ export default function Mobile() {
 
         {viewPageMobile == "landingpageMobile" && (
           <div className="border h-4/5 overflow-auto">
-            <div className="h-6 ms-2">
-              <h1 className=" font-bold  text-white font-bold">Discover</h1>
+            <div className="h-6 ms-2 flex ">
+              <h1 className=" font-bold  text-white font-bold">Discover </h1>
+              <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
             <div class=" flex  border border-red-400 overflow-x-scroll ">
               {music?.map((item1) => (
@@ -200,11 +231,15 @@ export default function Mobile() {
                   >
                     <img className="w-6 h-6" src="/playbutton.jpg" alt="not" />
                   </div>
+                  {/* <div className="flex justify-center align-item items-center overflow-hidden">
+                    <h1 className="text-white text-sm font-semibold">{item1.track.name}</h1>
+                  </div> */}
                 </div>
               ))}
             </div>
-            <div className="h-6 ms-2">
-              <h1 className=" font-bold  text-white font-bold">Trending</h1>
+            <div className="h-6 ms-2 flex">
+              <h1 className=" font-bold  text-white font-bold">Trending </h1>
+              <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
             <div class=" flex  border border-red-400 overflow-x-scroll">
               {lagiViral?.map((item2) => (
@@ -231,49 +266,55 @@ export default function Mobile() {
                   >
                     <img className="w-6 h-6" src="/playbutton.jpg" alt="not" />
                   </div>
+                  {/* <div className="flex justify-center align-item items-center overflow-hidden">
+                    <h1 className="text-white text-sm font-semibold">
+                      {item2.track.name}
+                    </h1>
+                  </div> */}
                 </div>
               ))}
             </div>
-
-            <div class=" flex  border border-red-400 overflow-x-scroll mt-6">
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-20 w-20 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
+            <div className="h-6 ms-2 flex ">
+              <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
             </div>
-            <div class=" flex  border border-red-400 overflow-x-scroll ">
-              <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
-              <div className="flex justify-center align-item items-center border h-28 w-28 flex-shrink-0 rounded-lg m-2">
-                <div>cek</div>
-              </div>
+            <div class="border grid gap-x-2 gap-y-2 grid-cols-3 sm:grid-cols-4 p-4">
+              {hotHits?.map((item3) => (
+                <>
+                  <div className="border h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+                    <img
+                      className="mx-auto border  rounded-md h-16 w-16  w-full h-full "
+                      src={item3.track.album.images[1].url}
+                      alt="tidak ada gambar"
+                    />
+                    <div
+                      className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
+                      onClick={() => {
+                        dispatch({
+                          type: "SETAUDIO_PLAYER",
+                          isLoading: true,
+                          payload: {
+                            audioName: item3.track.name,
+                            artisName: item3.track.artists[0].name,
+                            audioImage: item3.track.album.images[0].url,
+                            audioUrl: item3.track.preview_url,
+                          },
+                        });
+                      }}
+                    >
+                      <img
+                        className="w-6 h-6"
+                        src="/playbutton.jpg"
+                        alt="not"
+                      />
+                    </div>
+                    <div className="flex justify-center align-item items-center overflow-hidden ">
+                      <h1 className="text-white text-sm font-semibold">
+                        {item3.track.name}
+                      </h1>
+                    </div>
+                  </div>
+                </>
+              ))}
             </div>
           </div>
         )}
@@ -289,34 +330,37 @@ export default function Mobile() {
         )}
       </div>
       {/* navbar bottom */}
-      <div className=" absolute inset-x-0 bottom-0 h-16  bg-black z-20 border grid grid-cols-4">
-        <div
-          onClick={() => setViewPageMobile("landingpageMobile")}
-          className="border flex h-full justify-center align-item items-center"
-        >
-          <div className="bg-white w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-            <Image width={24} height={24} src="/playbutton.jpg" alt="not" />
+      {bottomBar && (
+        <div className=" absolute inset-x-0 bottom-0 h-16  bg-black z-20 border grid grid-cols-4 animate__animated animate__fadeIn">
+          <div
+            onClick={() => setViewPageMobile("landingpageMobile")}
+            className="border flex h-full justify-center align-item items-center"
+          >
+            <div className="bg-white w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+              <Image width={24} height={24} src="/playbutton.jpg" alt="not" />
+            </div>
+          </div>
+          <div className="border flex h-full justify-center align-item items-center">
+            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+              <Image width={24} height={24} src="/radio.png" alt="not" />
+            </div>
+          </div>
+          <div className="border flex h-full justify-center align-item items-center">
+            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+              <Image width={24} height={24} src="/music.png" alt="not" />
+            </div>
+          </div>
+          <div
+            onClick={() => setViewPageMobile("searchMusicMobile")}
+            className="border flex h-full justify-center align-item items-center"
+          >
+            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+              <Image width={24} height={24} src="/pencarian.png" alt="not" />
+            </div>
           </div>
         </div>
-        <div className="border flex h-full justify-center align-item items-center">
-          <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-            <Image width={24} height={24} src="/radio.png" alt="not" />
-          </div>
-        </div>
-        <div className="border flex h-full justify-center align-item items-center">
-          <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-            <Image width={24} height={24} src="/music.png" alt="not" />
-          </div>
-        </div>
-        <div
-          onClick={() => setViewPageMobile("searchMusicMobile")}
-          className="border flex h-full justify-center align-item items-center"
-        >
-          <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-            <Image width={24} height={24} src="/pencarian.png" alt="not" />
-          </div>
-        </div>
-      </div>
+      )}
+
       {/* navbar bottom */}
     </>
   );
