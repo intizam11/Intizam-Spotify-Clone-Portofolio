@@ -9,7 +9,7 @@ import AudioPlayerMobile from "@/app/components/componentMobile/audioPlayerMobil
 import { UserContext } from "../context/context";
 import SkeltonDiscover from "@/app/components/componentMobile/skeltonDiscover";
 import SkeltonTrending from "@/app/components/componentMobile/skeltonTrending";
-import SkeltonHotHits from '@/app/components/componentMobile/skeltonHotHits'
+import SkeltonHotHits from "@/app/components/componentMobile/skeltonHotHits";
 
 export default function Mobile() {
   const [viewPageMobile, setViewPageMobile] = useState("landingpageMobile");
@@ -26,6 +26,30 @@ export default function Mobile() {
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   const [bottomBar, setBottomBar] = useState(false);
   const [state, dispatch] = useContext(UserContext);
+  const [genre, setGenre] = useState();
+
+  const colorClassNames = [
+    "bg-amber-600",
+    "bg-red-600",
+    "bg-blue-600",
+    "bg-green-600",
+    "bg-indigo-600",
+    "bg-purple-600",
+    "bg-pink-600",
+    "bg-yellow-600",
+    "bg-teal-600",
+    "bg-cyan-600",
+    "bg-lime-600",
+    "bg-fuchsia-600",
+    "bg-gray-600",
+    "bg-orange-600",
+    "bg-emerald-600",
+    "bg-rose-600",
+    "bg-purple-700",
+    "bg-red-700",
+    "bg-yellow-700",
+    "bg-teal-700",
+  ];
 
   const greetings = () => {
     if (greet < 11) {
@@ -36,6 +60,25 @@ export default function Mobile() {
       return "Selamat Sore";
     } else if (greet >= 18) {
       return "Selamat Malam";
+    }
+  };
+
+  const getToken = async () => {
+    try {
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa(client_id + ":" + client_secret),
+        },
+        body: "grant_type=client_credentials",
+      });
+      const data = await response.json();
+      const acces_token = data.access_token;
+      spotifyAPI.setAccessToken(acces_token);
+      localStorage.setItem("Token", acces_token);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -98,23 +141,17 @@ export default function Mobile() {
     }
   };
 
-  const getToken = async () => {
-    try {
-      const response = await fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
+  const fetchGenre = async () => {
+    const response = await fetch(
+      "https://api.spotify.com/v1/recommendations?seed_genres=acoustic",
+      {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa(client_id + ":" + client_secret),
+          Authorization: `Bearer ${localStorage.getItem("Token")}`,
         },
-        body: "grant_type=client_credentials",
-      });
-      const data = await response.json();
-      const acces_token = data.access_token;
-      spotifyAPI.setAccessToken(acces_token);
-      localStorage.setItem("Token", acces_token);
-    } catch (error) {
-      console.log(error);
-    }
+      }
+    );
+    const data = await response.json();
+    setGenre(data.tracks);
   };
 
   useEffect(() => {
@@ -124,6 +161,7 @@ export default function Mobile() {
       getplaylist();
       getLagiViral();
       getHotHits();
+      fetchGenre();
     }, 500);
   }, []);
 
@@ -208,8 +246,8 @@ export default function Mobile() {
           {/* header */}
 
           {viewPageMobile == "searchMusicMobile" ? (
-            <div className=" flex p-4 ">
-              <div className="w-1/2  ">
+            <div className="border flex p-4 ">
+              <div className="w-1/2 border ">
                 <input
                   // onChange={handleInput}
                   placeholder="search"
@@ -217,7 +255,7 @@ export default function Mobile() {
                   type="text"
                 />
               </div>
-              <div className="flex justify-items-center   w-1/2"></div>
+              <div className="border flex justify-items-center   w-1/2"></div>
             </div>
           ) : (
             <div className=" flex p-4 ">
@@ -387,7 +425,27 @@ export default function Mobile() {
         )}
 
         {viewPageMobile == "searchMusicMobile" && (
-          <div className="h-4/5 ">cek</div>
+            <div className="h-4/5 border  grid gap-x-2 gap-y-4 grid-cols-3 mt-6  overflow-auto">
+              {genre?.map((itemGenre, index) => (
+                <div
+                  key={index}
+                  className={` h-28 w-28 rounded-lg overflow-hidden relative animate__animated animate__fadeIn ${
+                    colorClassNames[index % colorClassNames.length]
+                  }`}
+                >
+                  <div className=" mt-2 ms-2">
+                    <h1 className="text-sm font-bold">{itemGenre.name}</h1>
+                  </div>
+                  <div className="border absolute  -bottom-4  -right-4 w-16 h-16 ">
+                    <img
+                      className="rotate-45 w-16 h-16"
+                      src={itemGenre.album.images[1].url}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
         )}
       </div>
       {/* navbar bottom */}
