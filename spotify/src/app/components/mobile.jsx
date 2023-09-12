@@ -2,9 +2,11 @@
 
 // import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import PlayMusicMobile from "@/app/components/componentMobile/viewPlayMusic";
 import SpotifyWebApi from "spotify-web-api-js";
+import AudioPlayerMobile from "@/app/components/componentMobile/audioPlayerMobile";
+import { UserContext } from "../context/context";
 
 export default function Mobile() {
   const [viewPageMobile, setViewPageMobile] = useState("landingpageMobile");
@@ -20,6 +22,7 @@ export default function Mobile() {
   // console.log(music);
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   const [bottomBar, setBottomBar] = useState(false);
+  const [state, dispatch] = useContext(UserContext);
 
   const greetings = () => {
     if (greet < 11) {
@@ -76,7 +79,7 @@ export default function Mobile() {
   const getHotHits = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/playlists/37i9dQZF1DXa2EiKmMLhFD`,
+        `${baseUrl}/playlists/37i9dQZF1E3a9xmtLYnn1k`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -163,6 +166,31 @@ export default function Mobile() {
             {/* header kiri */}
             {/* header kanan */}
             <div className="w-1/2 border flex  justify-end">
+              {viewPageMobile == "searchMusicMobile" ? (
+                <div
+                  onClick={() => setViewPageMobile("landingpageMobile")}
+                  className=" flex h-full justify-center align-item items-center w-14 h-full"
+                >
+                  <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+                    <Image width={24} height={24} src="/music.png" alt="not" />
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => setViewPageMobile("searchMusicMobile")}
+                  className=" flex h-full justify-center align-item items-center w-14 h-full"
+                >
+                  <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
+                    <Image
+                      width={24}
+                      height={24}
+                      src="/pencarian.png"
+                      alt="not"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div
                 onClick={() => setBottomBar(!bottomBar)}
                 className=" w-14 h-full flex justify-center align-item items-center"
@@ -277,7 +305,7 @@ export default function Mobile() {
             <div className="h-6 ms-2 flex ">
               <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
             </div>
-            <div class="border grid gap-x-2 gap-y-2 grid-cols-3 sm:grid-cols-4 p-4">
+            <div class="border grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
               {hotHits?.map((item3) => (
                 <>
                   <div className="border h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
@@ -307,7 +335,7 @@ export default function Mobile() {
                         alt="not"
                       />
                     </div>
-                    <div className="flex justify-center align-item items-center overflow-hidden ">
+                    <div className="h-6 border overflow-hidden ">
                       <h1 className="text-white text-sm font-semibold">
                         {item3.track.name}
                       </h1>
@@ -330,36 +358,7 @@ export default function Mobile() {
         )}
       </div>
       {/* navbar bottom */}
-      {bottomBar && (
-        <div className=" absolute inset-x-0 bottom-0 h-16  bg-black z-20 border grid grid-cols-4 animate__animated animate__fadeIn">
-          <div
-            onClick={() => setViewPageMobile("landingpageMobile")}
-            className="border flex h-full justify-center align-item items-center"
-          >
-            <div className="bg-white w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-              <Image width={24} height={24} src="/playbutton.jpg" alt="not" />
-            </div>
-          </div>
-          <div className="border flex h-full justify-center align-item items-center">
-            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-              <Image width={24} height={24} src="/radio.png" alt="not" />
-            </div>
-          </div>
-          <div className="border flex h-full justify-center align-item items-center">
-            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-              <Image width={24} height={24} src="/music.png" alt="not" />
-            </div>
-          </div>
-          <div
-            onClick={() => setViewPageMobile("searchMusicMobile")}
-            className="border flex h-full justify-center align-item items-center"
-          >
-            <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
-              <Image width={24} height={24} src="/pencarian.png" alt="not" />
-            </div>
-          </div>
-        </div>
-      )}
+      {state.isLoading ? <></> : <>{bottomBar && <AudioPlayerMobile />}</>}
 
       {/* navbar bottom */}
     </>

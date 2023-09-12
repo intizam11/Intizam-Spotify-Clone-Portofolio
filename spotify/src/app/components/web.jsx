@@ -783,7 +783,7 @@ export default function Web() {
         <div className=" absolute inset-x-0 bottom-0 h-20  bg-black z-20">
           {/* {loadingValuePlayer ? ( */}
           {state.isLoading  ? <div></div> : <AudioPlayer />}
-          
+            
         </div>
         {/* play button */}
       </div>

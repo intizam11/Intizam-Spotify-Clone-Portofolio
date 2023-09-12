@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../context/context";
 import Image from "next/image";
 
-const AudioPlayer = (props) => {
+const AudioPlayer = () => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurentTime] = useState(0);
@@ -135,6 +135,7 @@ const AudioPlayer = (props) => {
                   alt="not"
                 />
               </div>
+              
               <div className=" flex justify-center align-item items-center">
                 <div className="me-2">
                   <p className="text-xs text-gray-400 font-semibold">
