@@ -7,6 +7,9 @@ import PlayMusicMobile from "@/app/components/componentMobile/viewPlayMusic";
 import SpotifyWebApi from "spotify-web-api-js";
 import AudioPlayerMobile from "@/app/components/componentMobile/audioPlayerMobile";
 import { UserContext } from "../context/context";
+import SkeltonDiscover from "@/app/components/componentMobile/skeltonDiscover";
+import SkeltonTrending from "@/app/components/componentMobile/skeltonTrending";
+import SkeltonHotHits from '@/app/components/componentMobile/skeltonHotHits'
 
 export default function Mobile() {
   const [viewPageMobile, setViewPageMobile] = useState("landingpageMobile");
@@ -168,7 +171,9 @@ export default function Mobile() {
             <div className="w-1/2  flex  justify-end">
               {viewPageMobile == "searchMusicMobile" ? (
                 <div
-                  onClick={() => {setViewPageMobile("landingpageMobile")}}
+                  onClick={() => {
+                    setViewPageMobile("landingpageMobile");
+                  }}
                   className=" flex h-full justify-center align-item items-center w-14 h-full"
                 >
                   <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
@@ -234,100 +239,77 @@ export default function Mobile() {
               <h1 className=" font-bold  text-white font-bold">Discover </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
-            <div class=" flex  overflow-x-scroll ">
-              {music?.map((item1) => (
-                <div className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
-                  <img
-                    className="mx-auto   rounded-md h-16 w-16  w-full h-full "
-                    src={item1.track.album.images[1].url}
-                    alt="tidak ada gambar"
-                  />
-                  <div
-                    className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
-                    onClick={() => {
-                      setBottomBar(true)
-                      dispatch({
-                        type: "SETAUDIO_PLAYER",
-                        isLoading: true,
-                        payload: {
-                          audioName: item1.track.name,
-                          artisName: item1.track.artists[0].name,
-                          audioImage: item1.track.album.images[0].url,
-                          audioUrl: item1.track.preview_url,
-                        },
-                      });
-                    }}
-                  >
-                    <img className="w-6 h-6" src="/playbutton.jpg" alt="not" />
-                  </div>
-                  {/* <div className="flex justify-center align-item items-center overflow-hidden">
+            {skeltonMusic ? (
+              <SkeltonDiscover />
+            ) : (
+              <>
+                <div class=" flex  overflow-x-scroll ">
+                  {music?.map((item1) => (
+                    <div className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
+                      <img
+                        className="mx-auto   rounded-md h-16 w-16  w-full h-full "
+                        src={item1.track.album.images[1].url}
+                        alt="tidak ada gambar"
+                      />
+                      <div
+                        className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
+                        onClick={() => {
+                          setBottomBar(true);
+                          dispatch({
+                            type: "SETAUDIO_PLAYER",
+                            isLoading: true,
+                            payload: {
+                              audioName: item1.track.name,
+                              artisName: item1.track.artists[0].name,
+                              audioImage: item1.track.album.images[0].url,
+                              audioUrl: item1.track.preview_url,
+                            },
+                          });
+                        }}
+                      >
+                        <img
+                          className="w-6 h-6"
+                          src="/playbutton.jpg"
+                          alt="not"
+                        />
+                      </div>
+                      {/* <div className="flex justify-center align-item items-center overflow-hidden">
                     <h1 className="text-white text-sm font-semibold">{item1.track.name}</h1>
                   </div> */}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
+
             <div className="h-6 ms-2 flex">
               <h1 className=" font-bold  text-white font-bold">Trending </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
-            <div class=" flex overflow-x-scroll">
-              {lagiViral?.map((item2) => (
-                <div className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
-                  <img
-                    className="mx-auto   rounded-md h-16 w-16  w-full h-full "
-                    src={item2.track.album.images[1].url}
-                    alt="tidak ada gambar"
-                  />
-                  <div
-                    className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
-                    onClick={() => {
-                      setBottomBar(true)
-                      dispatch({
-                        type: "SETAUDIO_PLAYER",
-                        isLoading: true,
-                        payload: {
-                          audioName: item2.track.name,
-                          artisName: item2.track.artists[0].name,
-                          audioImage: item2.track.album.images[0].url,
-                          audioUrl: item2.track.preview_url,
-                        },
-                      });
-                    }}
-                  >
-                    <img className="w-6 h-6" src="/playbutton.jpg" alt="not" />
-                  </div>
-                  {/* <div className="flex justify-center align-item items-center overflow-hidden">
-                    <h1 className="text-white text-sm font-semibold">
-                      {item2.track.name}
-                    </h1>
-                  </div> */}
-                </div>
-              ))}
-            </div>
-            <div className="h-6 ms-2 flex ">
-              <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
-            </div>
-            <div class=" grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
-              {hotHits?.map((item3) => (
-                <>
-                  <div className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+
+            {skeltonMusic ? (
+              <SkeltonTrending />
+            ) : (
+              <div class=" flex overflow-x-scroll">
+                {lagiViral?.map((item2) => (
+                  <div className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
                     <img
                       className="mx-auto   rounded-md h-16 w-16  w-full h-full "
-                      src={item3.track.album.images[1].url}
+                      src={item2.track.album.images[1].url}
                       alt="tidak ada gambar"
                     />
                     <div
                       className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
                       onClick={() => {
-                        setBottomBar(true)
+                        setBottomBar(true);
                         dispatch({
                           type: "SETAUDIO_PLAYER",
                           isLoading: true,
                           payload: {
-                            audioName: item3.track.name,
-                            artisName: item3.track.artists[0].name,
-                            audioImage: item3.track.album.images[0].url,
-                            audioUrl: item3.track.preview_url,
+                            audioName: item2.track.name,
+                            artisName: item2.track.artists[0].name,
+                            audioImage: item2.track.album.images[0].url,
+                            audioUrl: item2.track.preview_url,
                           },
                         });
                       }}
@@ -338,15 +320,63 @@ export default function Mobile() {
                         alt="not"
                       />
                     </div>
-                    <div className="h-6  overflow-hidden ">
-                      <h1 className="text-white text-sm font-semibold">
-                        {item3.track.name}
-                      </h1>
-                    </div>
+                    {/* <div className="flex justify-center align-item items-center overflow-hidden">
+                    <h1 className="text-white text-sm font-semibold">
+                      {item2.track.name}
+                    </h1>
+                  </div> */}
                   </div>
-                </>
-              ))}
+                ))}
+              </div>
+            )}
+
+            <div className="h-6 ms-2 flex ">
+              <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
             </div>
+            {skeltonMusic ? (
+              <SkeltonHotHits />
+            ) : (
+              <div class=" grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
+                {hotHits?.map((item3) => (
+                  <>
+                    <div className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+                      <img
+                        className="mx-auto   rounded-md h-16 w-16  w-full h-full "
+                        src={item3.track.album.images[1].url}
+                        alt="tidak ada gambar"
+                      />
+                      <div
+                        className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
+                        onClick={() => {
+                          setBottomBar(true);
+                          dispatch({
+                            type: "SETAUDIO_PLAYER",
+                            isLoading: true,
+                            payload: {
+                              audioName: item3.track.name,
+                              artisName: item3.track.artists[0].name,
+                              audioImage: item3.track.album.images[0].url,
+                              audioUrl: item3.track.preview_url,
+                            },
+                          });
+                        }}
+                      >
+                        <img
+                          className="w-6 h-6"
+                          src="/playbutton.jpg"
+                          alt="not"
+                        />
+                      </div>
+                      <div className="h-6  overflow-hidden ">
+                        <h1 className="text-white text-sm font-semibold">
+                          {item3.track.name}
+                        </h1>
+                      </div>
+                    </div>
+                  </>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
