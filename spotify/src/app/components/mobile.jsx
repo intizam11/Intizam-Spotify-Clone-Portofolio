@@ -60,7 +60,7 @@ export default function Mobile() {
   const getLagiViral = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/playlists/37i9dQZF1DWWhB4HOWKFQc`,
+        `${baseUrl}/playlists/37i9dQZF1E4yACKd7wTw5b`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -79,7 +79,7 @@ export default function Mobile() {
   const getHotHits = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/playlists/37i9dQZF1E3a9xmtLYnn1k`,
+        `${baseUrl}/playlists/37i9dQZF1DWY8wQ1UHaykc`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -150,11 +150,11 @@ export default function Mobile() {
   return (
     <>
       <div className=" h-screen bg-black  ">
-        <div className="h-1/5 border border-red-400">
+        <div className="h-1/5 ">
           {/* header */}
-          <div className="border border-red-400 flex">
+          <div className=" flex">
             {/* header kiri */}
-            <div className="border w-1/2">
+            <div className=" w-1/2">
               <Image
                 width={56}
                 height={56}
@@ -165,10 +165,10 @@ export default function Mobile() {
             </div>
             {/* header kiri */}
             {/* header kanan */}
-            <div className="w-1/2 border flex  justify-end">
+            <div className="w-1/2  flex  justify-end">
               {viewPageMobile == "searchMusicMobile" ? (
                 <div
-                  onClick={() => setViewPageMobile("landingpageMobile")}
+                  onClick={() => {setViewPageMobile("landingpageMobile")}}
                   className=" flex h-full justify-center align-item items-center w-14 h-full"
                 >
                   <div className=" w-8 h-8  flex items-center justify-center rounded-full mx-auto ">
@@ -203,8 +203,8 @@ export default function Mobile() {
           {/* header */}
 
           {viewPageMobile == "searchMusicMobile" ? (
-            <div className="border flex p-4 ">
-              <div className="w-1/2  border">
+            <div className=" flex p-4 ">
+              <div className="w-1/2  ">
                 <input
                   // onChange={handleInput}
                   placeholder="search"
@@ -212,11 +212,11 @@ export default function Mobile() {
                   type="text"
                 />
               </div>
-              <div className="flex justify-items-center border  w-1/2"></div>
+              <div className="flex justify-items-center   w-1/2"></div>
             </div>
           ) : (
-            <div className="border flex p-4 ">
-              <div className="border w-full flex justify-center align-item items-center">
+            <div className=" flex p-4 ">
+              <div className=" w-full flex justify-center align-item items-center">
                 <h1 className="text-3xl font-bold  text-white font-bold">
                   {greetings()}
                 </h1>
@@ -229,22 +229,23 @@ export default function Mobile() {
         </div>
 
         {viewPageMobile == "landingpageMobile" && (
-          <div className="border h-4/5 overflow-auto">
+          <div className=" h-4/5 overflow-auto">
             <div className="h-6 ms-2 flex ">
               <h1 className=" font-bold  text-white font-bold">Discover </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
-            <div class=" flex  border border-red-400 overflow-x-scroll ">
+            <div class=" flex  overflow-x-scroll ">
               {music?.map((item1) => (
-                <div className="border bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
+                <div className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
                   <img
-                    className="mx-auto border  rounded-md h-16 w-16  w-full h-full "
+                    className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                     src={item1.track.album.images[1].url}
                     alt="tidak ada gambar"
                   />
                   <div
                     className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
                     onClick={() => {
+                      setBottomBar(true)
                       dispatch({
                         type: "SETAUDIO_PLAYER",
                         isLoading: true,
@@ -269,17 +270,18 @@ export default function Mobile() {
               <h1 className=" font-bold  text-white font-bold">Trending </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
-            <div class=" flex  border border-red-400 overflow-x-scroll">
+            <div class=" flex overflow-x-scroll">
               {lagiViral?.map((item2) => (
-                <div className="flex justify-center align-item items-center border h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
+                <div className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
                   <img
-                    className="mx-auto border  rounded-md h-16 w-16  w-full h-full "
+                    className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                     src={item2.track.album.images[1].url}
                     alt="tidak ada gambar"
                   />
                   <div
                     className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
                     onClick={() => {
+                      setBottomBar(true)
                       dispatch({
                         type: "SETAUDIO_PLAYER",
                         isLoading: true,
@@ -305,18 +307,19 @@ export default function Mobile() {
             <div className="h-6 ms-2 flex ">
               <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
             </div>
-            <div class="border grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
+            <div class=" grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
               {hotHits?.map((item3) => (
                 <>
-                  <div className="border h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+                  <div className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
                     <img
-                      className="mx-auto border  rounded-md h-16 w-16  w-full h-full "
+                      className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                       src={item3.track.album.images[1].url}
                       alt="tidak ada gambar"
                     />
                     <div
                       className="bg-green-500 w-8 h-8  absolute z-10 bottom-2 right-3 flex items-center justify-center rounded-full cursor-pointer "
                       onClick={() => {
+                        setBottomBar(true)
                         dispatch({
                           type: "SETAUDIO_PLAYER",
                           isLoading: true,
@@ -335,7 +338,7 @@ export default function Mobile() {
                         alt="not"
                       />
                     </div>
-                    <div className="h-6 border overflow-hidden ">
+                    <div className="h-6  overflow-hidden ">
                       <h1 className="text-white text-sm font-semibold">
                         {item3.track.name}
                       </h1>
@@ -354,7 +357,7 @@ export default function Mobile() {
         )}
 
         {viewPageMobile == "searchMusicMobile" && (
-          <div className="h-4/5 border">cek</div>
+          <div className="h-4/5 ">cek</div>
         )}
       </div>
       {/* navbar bottom */}

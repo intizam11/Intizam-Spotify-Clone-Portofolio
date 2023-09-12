@@ -48,8 +48,8 @@ export default function AudioPlayerMobile() {
   }, []);
   return (
     <>
-      <div className=" absolute inset-x-0 bottom-0 h-16  bg-black z-20 border grid grid-cols-3 animate__animated animate__fadeIn">
-        <div className="border flex h-full justify-center align-item items-center h-full ">
+      <div className=" absolute inset-x-0 bottom-0 h-16  bg-black z-20  grid grid-cols-3 animate__animated animate__fadeIn">
+        <div className=" flex h-full justify-center align-item items-center h-full ">
           {state.audioData.audioImage ? (
             <div className=" w-10 h-10 m-2">
               <img
@@ -62,7 +62,7 @@ export default function AudioPlayerMobile() {
             <></>
           )}
         </div>
-        <div className="border flex h-full justify-center align-item items-center">
+        <div className=" flex h-full justify-center align-item items-center">
           <audio
             ref={audioRef}
             onTimeUpdate={handleTimeUpdate}
@@ -92,7 +92,7 @@ export default function AudioPlayerMobile() {
             )}
           </div>
         </div>
-        <div className="border flex h-full justify-center align-item items-center"></div>
+        <div className=" flex h-full justify-center align-item items-center"></div>
       </div>
     </>
   );
