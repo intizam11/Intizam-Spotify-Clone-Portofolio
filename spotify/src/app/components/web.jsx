@@ -5,8 +5,6 @@ import SpotifyWebApi from "spotify-web-api-js";
 import AudioPlayer from "../components/audioPlayer";
 import Style from "../components/viewDetailAlbum.module.css";
 import ViewDetailAlbum from "./viewDetailAlbum";
-// import { useSelector, useDispatch } from "react-redux";
-// import { setMyState } from "@/app/redux/action";
 import { UserContext } from "../context/context";
 
 import About from "@/app/components/aboutCompnt/about";
@@ -18,7 +16,7 @@ export default function Web() {
   const client_id = process.env.NEXT_PUBLIC_CLIENT;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [music, setMusic] = useState();
- 
+
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   // search
   const [ViewPage, setViewPage] = useState("viewLandingPage");
@@ -27,7 +25,7 @@ export default function Web() {
   const [isHover, setIsHover] = useState();
   // state hover
   // state Search component
-    const [inputSearch, setInputSearch] = useState("");
+  const [inputSearch, setInputSearch] = useState("");
   const [tipeSearch, setTipeSearch] = useState("album");
   const [resultAlbum, setResultAlbum] = useState();
   const [resultArtist, setResultForArtist] = useState();
@@ -37,7 +35,12 @@ export default function Web() {
   let debounceTimer;
   const [state, dispatch] = useContext(UserContext);
   const [history, setHistory] = useState();
-  console.log(history);
+  const [dataTulusMonokrom, setDataTulusMonokrom] = useState();
+  const [dataSheilaOn7, setDataSheilaOn7] = useState();
+  const [dataJustinBieber, setDataJustinBieber] = useState();
+  const [dataBrunoMars, setDataBrunoMars] = useState();
+  console.log(dataBrunoMars);
+  console.log(dataTulusMonokrom);
 
   const mappingHistory = () => {
     setHistory(JSON.parse(localStorage.getItem("history")));
@@ -81,14 +84,44 @@ export default function Web() {
     "bg-teal-700",
   ];
 
-  const getAlbum1 = async () => {
-    const response = await fetch(`${baseUrl}/albums/029WUoBjWc7Js1QiPH3mw0`, {
+  const getTulusMonokrom = async () => {
+    const response = await fetch(`${baseUrl}/albums/4szhn3xPmOJklFAcqNvTnQ`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("Token")}`,
       },
     });
     const data = await response.json();
-    console.log(data);
+    setDataTulusMonokrom(data);
+  };
+
+  const getSheilaOn7 = async () => {
+    const response = await fetch(`${baseUrl}/albums/4bPUtZdWsvU1eTPmJFuvwm`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    const data = await response.json();
+    setDataSheilaOn7(data);
+  };
+
+  const getJustinBieber = async () => {
+    const response = await fetch(`${baseUrl}/albums/3BmcYMh0KYsimWL6p2gPa9`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    const data = await response.json();
+    setDataJustinBieber(data);
+  };
+
+  const getBrunoMars = async () => {
+    const response = await fetch(`${baseUrl}/albums/1uyf3l2d4XYwiEqAb7t7fX`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+    });
+    const data = await response.json();
+    setDataBrunoMars(data);
   };
 
   function fillInput(e) {
@@ -242,6 +275,10 @@ export default function Web() {
     setTimeout(() => {
       getplaylist();
       fetchGenre();
+      getTulusMonokrom();
+      getSheilaOn7();
+      getJustinBieber();
+      getBrunoMars();
     }, 500);
   }, []);
 
@@ -332,10 +369,35 @@ export default function Web() {
               </div>
               {/* main container inner */}
               <div className=" grid gap-x-4 gap-y-4 grid-cols-2 overflow-x-auto md:m-6 md:grid md:gap-x-8 md:gap-y-4 md:grid-cols-3 animate__animated animate__fadeIn">
-                <div className=" rounded-md overflow-hidden drop-shadow-2xl">
-                  <div className="flex">
+                <div className=" rounded-md overflow-hidden drop-shadow-2xl cursor-pointer">
+                  <div
+                    onClick={() => {
+                      setViewPage("viewDetailAlbumPage");
+                      dispatch({
+                        type: "SET_DETAIL_ALBUM",
+                        payload: {
+                          detailValueIdAlbum: dataTulusMonokrom.id,
+                          detailValueTypeAlbum: dataTulusMonokrom.type,
+                          detailValueImageAlbum:
+                            dataTulusMonokrom.images[0].url,
+                          detailValueArtisName:
+                            dataTulusMonokrom.artists[0].name,
+                          detailValueReleaseAlbum:
+                            dataTulusMonokrom.release_date,
+                          detailValueTotalTrackAlbum:
+                            dataTulusMonokrom.total_tracks,
+                          detailValueNameAlbum: dataTulusMonokrom.name,
+                        },
+                      });
+                    }}
+                    className="flex"
+                  >
                     <div>
-                      <img className="w-20 h-20" src="TULUS.jpg" alt="" />
+                      <img
+                        className="w-20 h-20"
+                        src="tulusMonokrom.jpg"
+                        alt=""
+                      />
                     </div>
                     <div className="w-full bg-gray-600 bg-opacity-50 ">
                       <div className="mt-6 ms-5">
@@ -344,38 +406,93 @@ export default function Web() {
                     </div>
                   </div>
                 </div>
-                <div className=" rounded-md overflow-hidden drop-shadow-2xl ">
+                <div
+                  onClick={() => {
+                    setViewPage("viewDetailAlbumPage");
+                    dispatch({
+                      type: "SET_DETAIL_ALBUM",
+                      payload: {
+                        detailValueIdAlbum: dataSheilaOn7.id,
+                        detailValueTypeAlbum: dataSheilaOn7.type,
+                        detailValueImageAlbum: dataSheilaOn7.images[0].url,
+                        detailValueArtisName: dataSheilaOn7.artists[0].name,
+                        detailValueReleaseAlbum: dataSheilaOn7.release_date,
+                        detailValueTotalTrackAlbum: dataSheilaOn7.total_tracks,
+                        detailValueNameAlbum: dataSheilaOn7.name,
+                      },
+                    });
+                  }}
+                  className=" rounded-md overflow-hidden drop-shadow-2xl cursor-pointer"
+                >
                   <div className="flex">
                     <div>
-                      <img className="w-20 h-20" src="cek1.jpg" alt="" />
+                      <img className="w-20 h-20" src="sheilaon7.jpg" alt="" />
                     </div>
                     <div className="w-full bg-gray-600 bg-opacity-50 ">
                       <div className="mt-6 ms-5">
-                        <h1 className="text-white font-bold ">Tulus</h1>
+                        <h1 className="text-white font-bold ">Sheila On 7 </h1>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className=" rounded-md overflow-hidden drop-shadow-2xl">
+                <div
+                  onClick={() => {
+                    setViewPage("viewDetailAlbumPage");
+                    dispatch({
+                      type: "SET_DETAIL_ALBUM",
+                      payload: {
+                        detailValueIdAlbum: dataJustinBieber.id,
+                        detailValueTypeAlbum: dataJustinBieber.type,
+                        detailValueImageAlbum: dataJustinBieber.images[0].url,
+                        detailValueArtisName: dataJustinBieber.artists[0].name,
+                        detailValueReleaseAlbum: dataJustinBieber.release_date,
+                        detailValueTotalTrackAlbum:dataJustinBieber.total_tracks,
+                        detailValueNameAlbum: dataJustinBieber.name,
+                      },
+                    });
+                  }}
+                  className=" rounded-md overflow-hidden drop-shadow-2xl cursor-pointer"
+                >
                   <div className="flex">
                     <div>
-                      <img className="w-20 h-20" src="cek2.jpg" alt="" />
+                      <img
+                        className="w-20 h-20"
+                        src="justinbieber.jpeg"
+                        alt=""
+                      />
                     </div>
                     <div className="w-full bg-gray-600 bg-opacity-50 ">
                       <div className="mt-6 ms-5">
-                        <h1 className="text-white font-bold ">Tulus</h1>
+                        <h1 className="text-white font-bold ">justin Bieber</h1>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className=" rounded-md overflow-hidden drop-shadow-2xl">
+                <div
+                  onClick={() => {
+                    setViewPage("viewDetailAlbumPage");
+                    dispatch({
+                      type: "SET_DETAIL_ALBUM",
+                      payload: {
+                        detailValueIdAlbum: dataBrunoMars.id,
+                        detailValueTypeAlbum: dataBrunoMars.type,
+                        detailValueImageAlbum: dataBrunoMars.images[0].url,
+                        detailValueArtisName: dataBrunoMars.artists[0].name,
+                        detailValueReleaseAlbum: dataBrunoMars.release_date,
+                        detailValueTotalTrackAlbum: dataBrunoMars.total_tracks,
+                        detailValueNameAlbum: dataBrunoMars.name,
+                      },
+                    });
+                  }}
+                  className=" rounded-md overflow-hidden drop-shadow-2xl cursor-pointer"
+                >
                   <div className="flex">
                     <div>
-                      <img className="w-20 h-20" src="cek3.jpg" alt="" />
+                      <img className="w-20 h-20" src="bruno.jpeg" alt="" />
                     </div>
                     <div className="w-full bg-gray-600 bg-opacity-50 ">
                       <div className="mt-6 ms-5">
-                        <h1 className="text-white font-bold ">Tulus</h1>
+                        <h1 className="text-white font-bold ">Bruno Mars</h1>
                       </div>
                     </div>
                   </div>
@@ -782,8 +899,7 @@ export default function Web() {
         {/* play button */}
         <div className=" absolute inset-x-0 bottom-0 h-20  bg-black z-20">
           {/* {loadingValuePlayer ? ( */}
-          {state.isLoading  ? <div></div> : <AudioPlayer />}
-            
+          {state.isLoading ? <div></div> : <AudioPlayer />}
         </div>
         {/* play button */}
       </div>
