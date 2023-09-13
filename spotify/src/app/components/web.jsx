@@ -18,7 +18,7 @@ export default function Web() {
   const client_id = process.env.NEXT_PUBLIC_CLIENT;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [music, setMusic] = useState();
-  console.log(music);
+ 
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   // search
   const [ViewPage, setViewPage] = useState("viewLandingPage");

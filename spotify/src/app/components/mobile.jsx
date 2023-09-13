@@ -10,7 +10,7 @@ import { UserContext } from "../context/context";
 import SkeltonDiscover from "@/app/components/componentMobile/skeltonDiscover";
 import SkeltonTrending from "@/app/components/componentMobile/skeltonTrending";
 import SkeltonHotHits from "@/app/components/componentMobile/skeltonHotHits";
-import DetailAlbumMobile from '@/app/components/componentMobile/detailAlbumMobile'
+import DetailAlbumMobile from "@/app/components/componentMobile/detailAlbumMobile";
 
 export default function Mobile() {
   const [viewPageMobile, setViewPageMobile] = useState("landingpageMobile");
@@ -22,8 +22,6 @@ export default function Mobile() {
   const [music, setMusic] = useState();
   const [lagiViral, setLagiViral] = useState();
   const [hotHits, setHotHits] = useState();
-  console.log(hotHits);
-  // console.log(music);
   const [skeltonMusic, setSkeltonMusic] = useState(false);
   const [bottomBar, setBottomBar] = useState(false);
   const [state, dispatch] = useContext(UserContext);
@@ -35,6 +33,8 @@ export default function Mobile() {
   const [resultAlbum, setResultAlbum] = useState();
   const [resultArtist, setResultForArtist] = useState();
   const [resultTrack, setResultTrack] = useState();
+  const [isHover, setIsHover] = useState();
+  const [titleDelay, setTitleDelay] = useState(true);
 
   const colorClassNames = [
     "bg-amber-600",
@@ -235,6 +235,7 @@ export default function Mobile() {
       getLagiViral();
       getHotHits();
       fetchGenre();
+      setTitleDelay(false)
     }, 500);
   }, []);
 
@@ -254,7 +255,7 @@ export default function Mobile() {
   return (
     <>
       <div className=" h-screen bg-black  ">
-        <div className="border h-1/5 ">
+        <div className=" h-1/5 ">
           {/* header */}
           <div className=" flex">
             {/* header kiri */}
@@ -309,8 +310,8 @@ export default function Mobile() {
           {/* header */}
 
           {viewPageMobile == "searchMusicMobile" ? (
-            <div className="border flex p-4 ">
-              <div className="w-1/2 border ">
+            <div className=" flex p-4 ">
+              <div className="w-1/2  ">
                 <input
                   onChange={fillInput}
                   placeholder="search"
@@ -318,7 +319,7 @@ export default function Mobile() {
                   type="text"
                 />
               </div>
-              <div className="border grid gap-x-8 gap-y-4 grid-cols-3 w-1/2"></div>
+              <div className=" grid gap-x-8 gap-y-4 grid-cols-3 w-1/2"></div>
             </div>
           ) : (
             <div className=" flex p-4 ">
@@ -336,17 +337,26 @@ export default function Mobile() {
 
         {viewPageMobile == "landingpageMobile" && (
           <div className=" h-4/5 overflow-auto">
-            <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
-              <h1 className=" font-bold  text-white font-bold">Discover </h1>
-              <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
-            </div>
+            {titleDelay ? (
+              <></>
+            ) : (
+              <>
+                <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
+                  <h1 className=" font-bold  text-white font-bold">
+                    Discover{" "}
+                  </h1>
+                  <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
+                </div>
+              </>
+            )}
+
             {skeltonMusic ? (
               <SkeltonDiscover />
             ) : (
               <>
                 <div class=" flex  overflow-x-scroll ">
-                  {music?.map((item1) => (
-                    <div className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
+                  {music?.map((item1,index) => (
+                    <div key={index} className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
                       <img
                         className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                         src={item1.track.album.images[1].url}
@@ -382,18 +392,25 @@ export default function Mobile() {
                 </div>
               </>
             )}
-
-            <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
-              <h1 className=" font-bold  text-white font-bold">Trending </h1>
-              <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
-            </div>
+            {titleDelay ? (
+              <></>
+            ) : (
+              <>
+                <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
+                  <h1 className=" font-bold  text-white font-bold">
+                    Trending{" "}
+                  </h1>
+                  <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
+                </div>
+              </>
+            )}
 
             {skeltonMusic ? (
               <SkeltonTrending />
             ) : (
               <div class=" flex overflow-x-scroll animate__animated animate__fadeIn">
-                {lagiViral?.map((item2) => (
-                  <div className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
+                {lagiViral?.map((item2,index) => (
+                  <div key={index} className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
                     <img
                       className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                       src={item2.track.album.images[1].url}
@@ -430,17 +447,25 @@ export default function Mobile() {
                 ))}
               </div>
             )}
+            {titleDelay ? (
+              <></>
+            ) : (
+              <>
+                <div className="h-6 ms-2 flex ">
+                  <h1 className=" font-bold  text-white font-bold">
+                    Hot Hits{" "}
+                  </h1>
+                </div>
+              </>
+            )}
 
-            <div className="h-6 ms-2 flex ">
-              <h1 className=" font-bold  text-white font-bold">Hot Hits </h1>
-            </div>
             {skeltonMusic ? (
               <SkeltonHotHits />
             ) : (
               <div class=" grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
-                {hotHits?.map((item3) => (
+                {hotHits?.map((item3,index) => (
                   <>
-                    <div className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+                    <div key={index} className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
                       <img
                         className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                         src={item3.track.album.images[1].url}
@@ -490,7 +515,7 @@ export default function Mobile() {
         {viewPageMobile == "searchMusicMobile" && (
           <>
             {inputSearch == "" ? (
-              <div className="h-4/5 border  grid gap-x-2 gap-y-4 grid-cols-3 sm:grid-cols-4  overflow-auto">
+              <div className="h-4/5   grid gap-x-2 gap-y-4 grid-cols-3 sm:grid-cols-4  overflow-auto">
                 {genre?.map((itemGenre, index) => (
                   <div
                     key={index}
@@ -501,7 +526,7 @@ export default function Mobile() {
                     <div className=" mt-2 ms-2">
                       <h1 className="text-sm font-bold">{itemGenre.name}</h1>
                     </div>
-                    <div className="border absolute  -bottom-4  -right-4 w-16 h-16 ">
+                    <div className=" absolute  -bottom-4  -right-4 w-16 h-16 ">
                       <img
                         className="rotate-45 w-16 h-16"
                         src={itemGenre.album.images[1].url}
@@ -515,7 +540,7 @@ export default function Mobile() {
               <div className=" h-4/5  overflow-auto">
                 <div className="h-8   w-full">
                   {inputSearch ? (
-                    <div className=" border grid gap-x-4 gap-y-4 grid-cols-3 animate__animated animate__fadeIn">
+                    <div className="  grid gap-x-4 gap-y-4 grid-cols-3 animate__animated animate__fadeIn">
                       {tipeSearch === "album" ? (
                         <div
                           className="w-24  bg-white text-slate-950  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
@@ -568,7 +593,7 @@ export default function Mobile() {
                 </div>
 
                 {tipeSearch === "album" && (
-                  <div className=" border grid gap-x-2 gap-y-4 grid-cols-3 ">
+                  <div className="  grid gap-x-2 gap-y-4 grid-cols-3 ">
                     {resultAlbum?.map((itemAlbum, index) => (
                       <div
                         key={index}
@@ -619,6 +644,115 @@ export default function Mobile() {
                     ))}
                   </div>
                 )}
+
+                {tipeSearch === "artist" && (
+                  <>
+                    <div className="  grid gap-x-2 gap-y-4 grid-cols-3 mt-4 ">
+                      {resultArtist?.map((itemArtis, index) => (
+                        <div
+                          key={index}
+                          className={` bg-neutral-800 h-48 w-34 rounded-lg animate__animated animate__fadeIn drop-shadow-2xl`}
+                        >
+                          {itemArtis.images[0] && itemArtis.images[0].url ? (
+                            <div className="rounded-full mx-auto mt-2  w-28 h-28 ">
+                              <img
+                                className=" w-28 h-28  rounded-full"
+                                src={itemArtis.images[0].url}
+                                alt=""
+                              />
+                            </div>
+                          ) : (
+                            <div className=" rounded-full mx-auto mt-2  w-28 h-28 ">
+                              <img
+                                className=" w-28 h-28  rounded-full"
+                                src="/baru.jpg"
+                                alt=""
+                              />
+                            </div>
+                          )}
+
+                          <div className=" mx-auto overflow-hidden mt-2  w-36 h-4">
+                            <p className="font-bold text-xs">
+                              {" "}
+                              {itemArtis.name}
+                            </p>
+                          </div>
+                          <div className="flex  mx-auto overflow-hidden mt-1  w-36 h-6">
+                            <div>
+                              <p className="text-xs text-gray-300 font-medium">
+                                {itemArtis.type}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {tipeSearch === "track" && (
+                  <>
+                    <div>
+                      <div className="">
+                        {resultTrack.map((itemTrack, index) => (
+                          <div
+                            key={index}
+                            className="mt-6  h-full flex "
+                            onClick={() => {
+                              dispatch({
+                                type: "SETAUDIO_PLAYER",
+                                isLoading: true,
+                                payload: {
+                                  audioName: itemTrack.name,
+                                  artisName: itemTrack.artists[0].name,
+                                  audioImage: itemTrack.album.images[0].url,
+                                  audioUrl: itemTrack.preview_url,
+                                },
+                              });
+                            }}
+                            onMouseEnter={() => setIsHover(index)}
+                            onMouseLeave={() => setIsHover(null)}
+                          >
+                            <div className=" flex w-full">
+                              {isHover === index ? (
+                                <div className="  w-14 flex justify-center align-item items-center cursor-pointer">
+                                  <div className="bg-green-500 w-8 h-8  flex items-center justify-center rounded-full mx-auto">
+                                    <img
+                                      className="w-5 h-5"
+                                      src="/playbutton.jpg"
+                                      alt="not"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="  w-14 flex justify-center align-item items-center">
+                                  <p>{index + 1}</p>
+                                </div>
+                              )}
+
+                              <div className="">
+                                <img
+                                  className="h-14 w-14"
+                                  src={itemTrack.album.images[0].url}
+                                  alt=""
+                                />
+                              </div>
+                              <div className=" ms-2  w-full">
+                                <p className="text-sm font-bold">
+                                  {itemTrack.name}
+                                </p>
+                                <div className="m-2"></div>
+                                <p className="text-sm text-gray-300 font-medium">
+                                  {itemTrack.artists[0].name}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </>
@@ -638,24 +772,24 @@ export default function Mobile() {
                   </div>
                 </div>
 
-                <div className="border animate__animated animate__fadeIn w-2/3 flex justify-center align-item items-center">
-                  <div className="border w-full  ">
-                    <div className="border">
+                <div className=" animate__animated animate__fadeIn w-2/3 flex justify-center align-item items-center">
+                  <div className="ps-2   w-full  ">
+                    <div className="">
                       <p>{state.detailAlbum.detailValueTypeAlbum}</p>
                     </div>
                     <div>
-                      <h1 className="border">
+                      <h1 className="">
                         {state.detailAlbum.detailValueNameAlbum}
                       </h1>
                     </div>
-                    <div className="h-8 border flex">
-                      <div>
+                    <div className="h-8  flex">
+                      {/* <div>
                         <img
                           className="h-8 w-8 rounded-full"
                           src={state.detailAlbum.detailValueImageAlbum}
                           alt=""
                         />
-                      </div>
+                      </div> */}
                       <div className="mt-2">
                         <p className="text-xs">
                           {state.detailAlbum.detailValueArtisName}
@@ -671,8 +805,8 @@ export default function Mobile() {
                 </div>
               </div>
 
-              <div className="">
-<DetailAlbumMobile />
+              <div className=" p-4">
+                <DetailAlbumMobile />
               </div>
             </div>
           </>

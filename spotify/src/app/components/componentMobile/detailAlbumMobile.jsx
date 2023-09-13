@@ -31,7 +31,7 @@ export default function DetailAlbumMobile() {
       {detailAlbuumData?.map((itemTrack, index) => (
         <div
           key={index}
-          className="mt-6  h-16 ms-4 me-4 flex "
+          className=" h-16 w-full flex "
           onClick={() => {
             dispatch({
               type: "SETAUDIO_PLAYER",
@@ -46,7 +46,7 @@ export default function DetailAlbumMobile() {
           onMouseEnter={() => setIsHover(index)}
           onMouseLeave={() => setIsHover(null)}
         >
-          <div className=" flex w-3/4">
+          <div className=" flex w-full">
             {isHover === index ? (
               <div className="  w-14 flex justify-center align-item items-center cursor-pointer">
                 <div className="bg-green-500 w-8 h-8  flex items-center justify-center rounded-full mx-auto">
@@ -58,14 +58,6 @@ export default function DetailAlbumMobile() {
                 <p>{index + 1}</p>
               </div>
             )}
-
-            {/* <div className="">
-              <img
-                className="h-14 w-14"
-                src={itemTrack.album.images[0].url}
-                alt=""
-              />
-            </div> */}
             <div className=" ms-2 ">
               <p className="text-sm font-bold">{itemTrack.name}</p>
               <div className="m-2"></div>
@@ -73,9 +65,6 @@ export default function DetailAlbumMobile() {
                 {itemTrack.artists[0].name}
               </p>
             </div>
-          </div>
-          <div className="flex justify-center items-center w-1/3">
-            <p className="font-medium text-sm text-gray-300"></p>
           </div>
         </div>
       ))}
