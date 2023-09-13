@@ -10,6 +10,7 @@ import { UserContext } from "../context/context";
 import SkeltonDiscover from "@/app/components/componentMobile/skeltonDiscover";
 import SkeltonTrending from "@/app/components/componentMobile/skeltonTrending";
 import SkeltonHotHits from "@/app/components/componentMobile/skeltonHotHits";
+import DetailAlbumMobile from '@/app/components/componentMobile/detailAlbumMobile'
 
 export default function Mobile() {
   const [viewPageMobile, setViewPageMobile] = useState("landingpageMobile");
@@ -27,6 +28,13 @@ export default function Mobile() {
   const [bottomBar, setBottomBar] = useState(false);
   const [state, dispatch] = useContext(UserContext);
   const [genre, setGenre] = useState();
+  const [inputSearch, setInputSearch] = useState("");
+  const [tipeSearch, setTipeSearch] = useState("album");
+  const debounceTimeout = 1000;
+  let debounceTimer;
+  const [resultAlbum, setResultAlbum] = useState();
+  const [resultArtist, setResultForArtist] = useState();
+  const [resultTrack, setResultTrack] = useState();
 
   const colorClassNames = [
     "bg-amber-600",
@@ -154,6 +162,71 @@ export default function Mobile() {
     setGenre(data.tracks);
   };
 
+  function fillInput(e) {
+    setInputSearch(e.target.value);
+  }
+
+  const changeTipeSearch = (item) => {
+    setTipeSearch(item);
+  };
+
+  const fetchTrack = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/search?q=${inputSearch}&type=track&limit=30`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setResultTrack(data.tracks.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchArtist = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/search?q=${inputSearch}&type=artist&limit=50`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setResultForArtist(data.artists.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAlbum = async () => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(
+        `${baseUrl}/search?q=${inputSearch}&type=album&limit=50`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setResultAlbum(data.albums.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const formatYear = (releaseDate) => {
+    let result = new Date(releaseDate).getFullYear();
+    return result;
+  };
+
   useEffect(() => {
     getToken();
     localStorage.removeItem("history");
@@ -165,33 +238,23 @@ export default function Mobile() {
     }, 500);
   }, []);
 
-  // const [inputSearch, setInputSearch] = useState("Ed sheran");
-
-  // const handleInput = (event) => {
-  //   setInputSearch(encodeURIComponent(event.target.value));
-  // };
-
-  // const searchArtist = async () => {
-  //   const response = await fetch(
-  //     `${baseURL}/search?q=${inputSearch}&type=artist`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer  ${localStorage.getItem("Token")}`,
-  //       },
-  //     }
-  //   );
-  //   const data = await response.json();
-  //   console.log(data.artists.items);
-  // };
-
-  // useEffect(() => {
-  //   searchArtist();
-  // }, []);
+  useEffect(() => {
+    if (inputSearch !== "") {
+      debounceTimer = setTimeout(() => {
+        fetchAlbum();
+        fetchArtist();
+        fetchTrack();
+      }, debounceTimeout);
+    }
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [inputSearch, tipeSearch]);
 
   return (
     <>
       <div className=" h-screen bg-black  ">
-        <div className="h-1/5 ">
+        <div className="border h-1/5 ">
           {/* header */}
           <div className=" flex">
             {/* header kiri */}
@@ -249,13 +312,13 @@ export default function Mobile() {
             <div className="border flex p-4 ">
               <div className="w-1/2 border ">
                 <input
-                  // onChange={handleInput}
+                  onChange={fillInput}
                   placeholder="search"
                   className="rounded-lg outline-none w-40 p-1 text-gray-950"
                   type="text"
                 />
               </div>
-              <div className="border flex justify-items-center   w-1/2"></div>
+              <div className="border grid gap-x-8 gap-y-4 grid-cols-3 w-1/2"></div>
             </div>
           ) : (
             <div className=" flex p-4 ">
@@ -273,7 +336,7 @@ export default function Mobile() {
 
         {viewPageMobile == "landingpageMobile" && (
           <div className=" h-4/5 overflow-auto">
-            <div className="h-6 ms-2 flex ">
+            <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
               <h1 className=" font-bold  text-white font-bold">Discover </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
@@ -320,7 +383,7 @@ export default function Mobile() {
               </>
             )}
 
-            <div className="h-6 ms-2 flex">
+            <div className="h-6 ms-2 flex animate__animated animate__fadeIn">
               <h1 className=" font-bold  text-white font-bold">Trending </h1>
               <img className="w-8 h-4 ms-2" src="/arrow2.png" alt="" />
             </div>
@@ -328,7 +391,7 @@ export default function Mobile() {
             {skeltonMusic ? (
               <SkeltonTrending />
             ) : (
-              <div class=" flex overflow-x-scroll">
+              <div class=" flex overflow-x-scroll animate__animated animate__fadeIn">
                 {lagiViral?.map((item2) => (
                   <div className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
                     <img
@@ -425,27 +488,194 @@ export default function Mobile() {
         )}
 
         {viewPageMobile == "searchMusicMobile" && (
-            <div className="h-4/5 border  grid gap-x-2 gap-y-4 grid-cols-3 mt-6  overflow-auto">
-              {genre?.map((itemGenre, index) => (
-                <div
-                  key={index}
-                  className={` h-28 w-28 rounded-lg overflow-hidden relative animate__animated animate__fadeIn ${
-                    colorClassNames[index % colorClassNames.length]
-                  }`}
-                >
-                  <div className=" mt-2 ms-2">
-                    <h1 className="text-sm font-bold">{itemGenre.name}</h1>
+          <>
+            {inputSearch == "" ? (
+              <div className="h-4/5 border  grid gap-x-2 gap-y-4 grid-cols-3 sm:grid-cols-4  overflow-auto">
+                {genre?.map((itemGenre, index) => (
+                  <div
+                    key={index}
+                    className={` h-28 w-28 rounded-lg overflow-hidden relative animate__animated animate__fadeIn ${
+                      colorClassNames[index % colorClassNames.length]
+                    }`}
+                  >
+                    <div className=" mt-2 ms-2">
+                      <h1 className="text-sm font-bold">{itemGenre.name}</h1>
+                    </div>
+                    <div className="border absolute  -bottom-4  -right-4 w-16 h-16 ">
+                      <img
+                        className="rotate-45 w-16 h-16"
+                        src={itemGenre.album.images[1].url}
+                        alt=""
+                      />
+                    </div>
                   </div>
-                  <div className="border absolute  -bottom-4  -right-4 w-16 h-16 ">
+                ))}
+              </div>
+            ) : (
+              <div className=" h-4/5  overflow-auto">
+                <div className="h-8   w-full">
+                  {inputSearch ? (
+                    <div className=" border grid gap-x-4 gap-y-4 grid-cols-3 animate__animated animate__fadeIn">
+                      {tipeSearch === "album" ? (
+                        <div
+                          className="w-24  bg-white text-slate-950  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("album")}
+                        >
+                          <h1>Album</h1>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-24 bg-neutral-800  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("album")}
+                        >
+                          <h1>Album</h1>
+                        </div>
+                      )}
+                      {tipeSearch === "artist" ? (
+                        <div
+                          className="w-24 bg-white text-slate-950  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("artist")}
+                        >
+                          <h1>Artis</h1>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-24 bg-neutral-800  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("artist")}
+                        >
+                          <h1>Artis</h1>
+                        </div>
+                      )}
+                      {tipeSearch === "track" ? (
+                        <div
+                          className="w-24 bg-white text-slate-950  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("track")}
+                        >
+                          <h1>Track</h1>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-24 bg-neutral-800  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
+                          onClick={() => changeTipeSearch("track")}
+                        >
+                          <h1>Track</h1>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="animate__animated animate__fadeOut"> </div>
+                  )}
+                </div>
+
+                {tipeSearch === "album" && (
+                  <div className=" border grid gap-x-2 gap-y-4 grid-cols-3 ">
+                    {resultAlbum?.map((itemAlbum, index) => (
+                      <div
+                        key={index}
+                        className={`bg-neutral-800 h-44  rounded-lg animate__animated animate__fadeIn cursor-pointer drop-shadow-2xl overflow-hidden`}
+                        onClick={() => {
+                          setViewPageMobile("detailAlbumMobile");
+                          dispatch({
+                            type: "SET_DETAIL_ALBUM",
+                            payload: {
+                              detailValueIdAlbum: itemAlbum.id,
+                              detailValueTypeAlbum: itemAlbum.type,
+                              detailValueImageAlbum: itemAlbum.images[0].url,
+                              detailValueArtisName: itemAlbum.artists[0].name,
+                              detailValueReleaseAlbum: itemAlbum.release_date,
+                              detailValueTotalTrackAlbum:
+                                itemAlbum.total_tracks,
+                              detailValueNameAlbum: itemAlbum.name,
+                            },
+                          });
+                        }}
+                      >
+                        <div className="rounded-md mx-auto mt-2  w-24 h-24 ">
+                          <img
+                            className="w-24 h-24 rounded-md"
+                            src={itemAlbum.images[0].url}
+                            alt=""
+                          />
+                        </div>
+                        <div className=" mx-auto overflow-hidden mt-2  w-36 h-4">
+                          <p className="font-bold text-xs"> {itemAlbum.name}</p>
+                        </div>
+                        <div className="flex  mx-auto overflow-hidden mt-1  w-36 h-6">
+                          {/* <div>
+                            <p className="text-xs text-gray-300 ">
+                              {formatYear(itemAlbum.release_date)}{" "}
+                            </p>
+                          </div> */}
+                          <div className="ms-1 me-1">
+                            <p className="text-xs text-gray-300"> • </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-300 font-medium">
+                              {itemAlbum.artists[0].name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+
+        {viewPageMobile == "detailAlbumMobile" && (
+          <>
+            <div className=" bg-neutral-900 overflow-auto h-screen md:w-4/5 relative">
+              <div className=" rounded-md flex ">
+                <div className=" animate__animated animate__fadeIn w-1/3 flex justify-center align-item items-center ">
+                  <div>
                     <img
-                      className="rotate-45 w-16 h-16"
-                      src={itemGenre.album.images[1].url}
+                      className=" w-32 h-34  "
+                      src={state.detailAlbum.detailValueImageAlbum}
                       alt=""
                     />
                   </div>
                 </div>
-              ))}
+
+                <div className="border animate__animated animate__fadeIn w-2/3 flex justify-center align-item items-center">
+                  <div className="border w-full  ">
+                    <div className="border">
+                      <p>{state.detailAlbum.detailValueTypeAlbum}</p>
+                    </div>
+                    <div>
+                      <h1 className="border">
+                        {state.detailAlbum.detailValueNameAlbum}
+                      </h1>
+                    </div>
+                    <div className="h-8 border flex">
+                      <div>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src={state.detailAlbum.detailValueImageAlbum}
+                          alt=""
+                        />
+                      </div>
+                      <div className="mt-2">
+                        <p className="text-xs">
+                          {state.detailAlbum.detailValueArtisName}
+                        </p>
+                      </div>
+                      <div className="mt-2 ms-2">
+                        <p className="text-xs">
+                          {state.detailAlbum.detailValueReleaseAlbum}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="">
+<DetailAlbumMobile />
+              </div>
             </div>
+          </>
         )}
       </div>
       {/* navbar bottom */}

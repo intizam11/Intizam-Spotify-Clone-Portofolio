@@ -27,7 +27,7 @@ export default function Web() {
   const [isHover, setIsHover] = useState();
   // state hover
   // state Search component
-  const [inputSearch, setInputSearch] = useState("");
+    const [inputSearch, setInputSearch] = useState("");
   const [tipeSearch, setTipeSearch] = useState("album");
   const [resultAlbum, setResultAlbum] = useState();
   const [resultArtist, setResultForArtist] = useState();
