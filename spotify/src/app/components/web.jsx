@@ -286,32 +286,45 @@ export default function Web() {
     <>
       <div className=" md:flex ">
         {/* kiri */}
-        <div className=" md:h-screen overflow-hidden  md:w-1/4 border border ">
+        <div className=" md:h-screen overflow-hidden  md:w-1/4  ">
           <div className="h-screen pb-20 ">
-
-            <div className=" m-2  rounded-md bg-neutral-900 h-1/5 border">
-              <div className="m-3 mt-2 flex animate__animated animate__fadeIn cursor-pointer border">
-                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/home.png" alt="" />
-                <h1
-                  className="m-1 text-slate-300 font-bold"
-                  onClick={() => setViewPage("viewLandingPage")}
+            <div className=" m-2  rounded-md bg-neutral-900 h-1/5  flex justify-center align-item items-center ">
+              <div className=" w-full">
+                <div className="m-3  flex animate__animated animate__fadeIn cursor-pointer ">
+                  <img
+                    className="w-4  h-4 m-2 md:5 md:w-5"
+                    src="/home.png"
+                    alt=""
+                  />
+                  <h1
+                    className="m-1 text-slate-300 font-bold"
+                    onClick={() => setViewPage("viewLandingPage")}
+                  >
+                    Home
+                  </h1>
+                </div>
+                <div
+                  className="m-2 flex animate__animated animate__fadeIn cursor-pointer "
+                  onClick={() => setViewPage("viewSearchPage")}
                 >
-                  Home
-                </h1>
-              </div>
-              <div
-                className="m-2 flex animate__animated animate__fadeIn cursor-pointer border"
-                onClick={() => setViewPage("viewSearchPage")}
-              >
-                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/pencarian.png" alt="" />
-                <h1 className="m-1 text-slate-300 font-bold">Cari</h1>
-              </div>
-              <div
-                onClick={() => setViewPage("aboutDeveloper")}
-                className="m-2 cursor-pointer flex animate__animated animate__fadeIn cursor-pointer border"
-              >
-                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/eng.png" alt="" />
-                <h1 className="m-1 text-slate-300 font-bold">Settings</h1>
+                  <img
+                    className="w-4  h-4 m-2 md:5 md:w-5"
+                    src="/pencarian.png"
+                    alt=""
+                  />
+                  <h1 className="m-1 text-slate-300 font-bold">Cari</h1>
+                </div>
+                <div
+                  onClick={() => setViewPage("aboutDeveloper")}
+                  className="m-2 cursor-pointer flex animate__animated animate__fadeIn cursor-pointer "
+                >
+                  <img
+                    className="w-4  h-4 m-2 md:5 md:w-5"
+                    src="/eng.png"
+                    alt=""
+                  />
+                  <h1 className="m-1 text-slate-300 font-bold">Settings</h1>
+                </div>
               </div>
             </div>
 
@@ -448,7 +461,8 @@ export default function Web() {
                         detailValueImageAlbum: dataJustinBieber.images[0].url,
                         detailValueArtisName: dataJustinBieber.artists[0].name,
                         detailValueReleaseAlbum: dataJustinBieber.release_date,
-                        detailValueTotalTrackAlbum:dataJustinBieber.total_tracks,
+                        detailValueTotalTrackAlbum:
+                          dataJustinBieber.total_tracks,
                         detailValueNameAlbum: dataJustinBieber.name,
                       },
                     });
