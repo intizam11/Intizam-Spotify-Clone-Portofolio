@@ -39,8 +39,8 @@ export default function Web() {
   const [dataSheilaOn7, setDataSheilaOn7] = useState();
   const [dataJustinBieber, setDataJustinBieber] = useState();
   const [dataBrunoMars, setDataBrunoMars] = useState();
-  console.log(dataBrunoMars);
-  console.log(dataTulusMonokrom);
+  // console.log(dataBrunoMars);
+  // console.log(dataTulusMonokrom);
 
   const mappingHistory = () => {
     setHistory(JSON.parse(localStorage.getItem("history")));
@@ -286,11 +286,12 @@ export default function Web() {
     <>
       <div className=" md:flex ">
         {/* kiri */}
-        <div className=" md:h-screen overflow-hidden  md:w-1/4 ">
-          <div className="h-screen pb-20">
-            <div className=" m-2 p-2  rounded-md bg-neutral-900 h-1/5 ">
-              <div className="m-3 flex animate__animated animate__fadeIn cursor-pointer">
-                <img className="w-5 h-5 m-2" src="/home.png" alt="" />
+        <div className=" md:h-screen overflow-hidden  md:w-1/4 border border ">
+          <div className="h-screen pb-20 ">
+
+            <div className=" m-2  rounded-md bg-neutral-900 h-1/5 border">
+              <div className="m-3 mt-2 flex animate__animated animate__fadeIn cursor-pointer border">
+                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/home.png" alt="" />
                 <h1
                   className="m-1 text-slate-300 font-bold"
                   onClick={() => setViewPage("viewLandingPage")}
@@ -299,20 +300,21 @@ export default function Web() {
                 </h1>
               </div>
               <div
-                className="m-2 flex animate__animated animate__fadeIn cursor-pointer"
+                className="m-2 flex animate__animated animate__fadeIn cursor-pointer border"
                 onClick={() => setViewPage("viewSearchPage")}
               >
-                <img className=" w-5 h-5  m-2" src="/pencarian.png" alt="" />
+                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/pencarian.png" alt="" />
                 <h1 className="m-1 text-slate-300 font-bold">Cari</h1>
               </div>
               <div
                 onClick={() => setViewPage("aboutDeveloper")}
-                className="m-2 cursor-pointer flex animate__animated animate__fadeIn cursor-pointer"
+                className="m-2 cursor-pointer flex animate__animated animate__fadeIn cursor-pointer border"
               >
-                <img className=" w-5 h-5  m-2" src="/eng.png" alt="" />
+                <img className="w-4  h-4 m-2 md:5 md:w-5" src="/eng.png" alt="" />
                 <h1 className="m-1 text-slate-300 font-bold">Settings</h1>
               </div>
             </div>
+
             <div className=" m-2 p-2 overflow-auto rounded-md bg-neutral-900   h-4/5 ">
               <div className="flex ">
                 <h1 className="m-1 text-slate-300 font-bold">History</h1>
