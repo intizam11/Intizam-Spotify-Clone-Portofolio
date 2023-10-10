@@ -1,15 +1,16 @@
 "use client";
 
-import Progres from '@/app/components/progres';
+import Progres from "@/app/components/progres";
 import { useEffect, useState } from "react";
 import FirstLoad from "../app/components/firstLoad";
 import Web from "../app/components/web";
-import Mobile from '@/app/components/mobile'
+import Mobile from "@/app/components/mobile";
 
 export default function Home() {
   const [loadBaru, setLoadBaru] = useState(true);
   const mobileWidth = 768;
   const [windowWidth, setWindowWidth] = useState(0);
+  
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
@@ -22,7 +23,6 @@ export default function Home() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,7 +43,6 @@ export default function Home() {
             <Web />
           )}
         </div>
-        
       )}
     </div>
   );
