@@ -27,7 +27,7 @@ export default function Mobile() {
   const [state, dispatch] = useContext(UserContext);
   const [genre, setGenre] = useState();
   const [inputSearch, setInputSearch] = useState("");
-  const [tipeSearch, setTipeSearch] = useState("album");
+  const [tipeSearch, setTipeSearch] = useState("track");
   const debounceTimeout = 1000;
   let debounceTimer;
   const [resultAlbum, setResultAlbum] = useState();
@@ -204,23 +204,23 @@ export default function Mobile() {
     }
   };
 
-  const fetchAlbum = async () => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await fetch(
-        `${baseUrl}/search?q=${inputSearch}&type=album&limit=50`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setResultAlbum(data.albums.items);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchAlbum = async () => {
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     const response = await fetch(
+  //       `${baseUrl}/search?q=${inputSearch}&type=album&limit=50`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("Token")}`,
+  //         },
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     setResultAlbum(data.albums.items);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const formatYear = (releaseDate) => {
     let result = new Date(releaseDate).getFullYear();
@@ -235,14 +235,14 @@ export default function Mobile() {
       getLagiViral();
       getHotHits();
       fetchGenre();
-      setTitleDelay(false)
+      setTitleDelay(false);
     }, 500);
   }, []);
 
   useEffect(() => {
     if (inputSearch !== "") {
       debounceTimer = setTimeout(() => {
-        fetchAlbum();
+        // fetchAlbum();
         fetchArtist();
         fetchTrack();
       }, debounceTimeout);
@@ -355,8 +355,11 @@ export default function Mobile() {
             ) : (
               <>
                 <div class=" flex  overflow-x-scroll ">
-                  {music?.map((item1,index) => (
-                    <div key={index} className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative">
+                  {music?.map((item1, index) => (
+                    <div
+                      key={index}
+                      className=" bg-neutral-800 h-28 w-28 flex-shrink-0 rounded-lg m-2 relative"
+                    >
                       <img
                         className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                         src={item1.track.album.images[1].url}
@@ -409,8 +412,11 @@ export default function Mobile() {
               <SkeltonTrending />
             ) : (
               <div class=" flex overflow-x-scroll animate__animated animate__fadeIn">
-                {lagiViral?.map((item2,index) => (
-                  <div key={index} className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative">
+                {lagiViral?.map((item2, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-center align-item items-center  h-28 w-32 flex-shrink-0 rounded-lg m-2 relative"
+                  >
                     <img
                       className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                       src={item2.track.album.images[1].url}
@@ -463,9 +469,12 @@ export default function Mobile() {
               <SkeltonHotHits />
             ) : (
               <div class=" grid gap-x-2 gap-y-6 grid-cols-3 sm:grid-cols-4 p-4">
-                {hotHits?.map((item3,index) => (
+                {hotHits?.map((item3, index) => (
                   <>
-                    <div key={index} className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative">
+                    <div
+                      key={index}
+                      className=" h-24 w-24 flex-shrink-0 rounded-lg m-2 relative"
+                    >
                       <img
                         className="mx-auto   rounded-md h-16 w-16  w-full h-full "
                         src={item3.track.album.images[1].url}
@@ -538,9 +547,9 @@ export default function Mobile() {
               </div>
             ) : (
               <div className=" h-4/5  overflow-auto">
-                <div className="h-8   w-full">
+                {/* <div className="h-8   w-full">
                   {inputSearch ? (
-                    <div className="  grid gap-x-4 gap-y-4 grid-cols-3 animate__animated animate__fadeIn">
+                    <div className="  grid gap-x-4 gap-y-4 grid-cols-1 animate__animated animate__fadeIn">
                       {tipeSearch === "album" ? (
                         <div
                           className="w-24  bg-white text-slate-950  h-7 rounded-lg flex justify-center cursor-pointer drop-shadow-2xl"
@@ -590,9 +599,9 @@ export default function Mobile() {
                   ) : (
                     <div className="animate__animated animate__fadeOut"> </div>
                   )}
-                </div>
+                </div> */}
 
-                {tipeSearch === "album" && (
+                {/* {tipeSearch === "album" && (
                   <div className="  grid gap-x-2 gap-y-4 grid-cols-3 ">
                     {resultAlbum?.map((itemAlbum, index) => (
                       <div
@@ -623,14 +632,12 @@ export default function Mobile() {
                           />
                         </div>
                         <div className=" mx-auto overflow-hidden mt-2  w-36 h-4">
-                          <p className="font-bold text-xs"> {itemAlbum.name}</p>
+                          <p className="font-bold text-xs text-white">
+                            {" "}
+                            {itemAlbum.name}
+                          </p>
                         </div>
                         <div className="flex  mx-auto overflow-hidden mt-1  w-36 h-6">
-                          {/* <div>
-                            <p className="text-xs text-gray-300 ">
-                              {formatYear(itemAlbum.release_date)}{" "}
-                            </p>
-                          </div> */}
                           <div className="ms-1 me-1">
                             <p className="text-xs text-gray-300"> • </p>
                           </div>
@@ -643,9 +650,9 @@ export default function Mobile() {
                       </div>
                     ))}
                   </div>
-                )}
+                )} */}
 
-                {tipeSearch === "artist" && (
+                {/* {tipeSearch === "artist" && (
                   <>
                     <div className="  grid gap-x-2 gap-y-4 grid-cols-3 mt-4 ">
                       {resultArtist?.map((itemArtis, index) => (
@@ -672,7 +679,7 @@ export default function Mobile() {
                           )}
 
                           <div className=" mx-auto overflow-hidden mt-2  w-36 h-4">
-                            <p className="font-bold text-xs">
+                            <p className="font-bold text-xs text-white">
                               {" "}
                               {itemArtis.name}
                             </p>
@@ -688,13 +695,13 @@ export default function Mobile() {
                       ))}
                     </div>
                   </>
-                )}
+                )} */}
 
                 {tipeSearch === "track" && (
                   <>
                     <div>
                       <div className="">
-                        {resultTrack.map((itemTrack, index) => (
+                        {resultTrack?.map((itemTrack, index) => (
                           <div
                             key={index}
                             className="mt-6  h-full flex "
@@ -775,10 +782,12 @@ export default function Mobile() {
                 <div className=" animate__animated animate__fadeIn w-2/3 flex justify-center align-item items-center">
                   <div className="ps-2   w-full  ">
                     <div className="">
-                      <p>{state.detailAlbum.detailValueTypeAlbum}</p>
+                      <p className="text-white">
+                        {state.detailAlbum.detailValueTypeAlbum}
+                      </p>
                     </div>
                     <div>
-                      <h1 className="">
+                      <h1 className="text-white">
                         {state.detailAlbum.detailValueNameAlbum}
                       </h1>
                     </div>
@@ -791,12 +800,12 @@ export default function Mobile() {
                         />
                       </div> */}
                       <div className="mt-2">
-                        <p className="text-xs">
+                        <p className="text-xs text-white">
                           {state.detailAlbum.detailValueArtisName}
                         </p>
                       </div>
                       <div className="mt-2 ms-2">
-                        <p className="text-xs">
+                        <p className="text-xs text-white">
                           {state.detailAlbum.detailValueReleaseAlbum}
                         </p>
                       </div>

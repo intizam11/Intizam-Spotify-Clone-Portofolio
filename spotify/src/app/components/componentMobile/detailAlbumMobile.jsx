@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from '@/app/context/context'
+import { UserContext } from "@/app/context/context";
 
 export default function DetailAlbumMobile() {
   const [detailAlbuumData, setDetailAlbumData] = useState();
@@ -55,11 +55,11 @@ export default function DetailAlbumMobile() {
               </div>
             ) : (
               <div className="  w-14 flex justify-center align-item items-center">
-                <p>{index + 1}</p>
+                <p className="text-white">{index + 1}</p>
               </div>
             )}
             <div className=" ms-2 ">
-              <p className="text-sm font-bold">{itemTrack.name}</p>
+              <p className="text-sm font-bold text-white">{itemTrack.name}</p>
               <div className="m-2"></div>
               <p className="text-sm text-gray-300 font-medium">
                 {itemTrack.artists[0].name}
